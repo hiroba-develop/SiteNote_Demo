@@ -7,10 +7,17 @@ export default {
         sans: ['"Noto Sans JP"', "sans-serif"],
       },
       colors: {
-        primary: "#67BACA",
-        accent: "#FE0000",
-        sub1: "#B3DBC0",
-        sub2: "#FDF6F6",
+        primary: "#2E5BBA", // SiteNote メインカラー
+        accent: "#FF6B35", // アクセントカラー
+        sub1: "#6B7280", // サブカラー①
+        sub2: "#F3F4F6", // サブカラー②
+        // 既存クラスで使用している blue-* を置き換えるため、同系統の色で上書き
+        blue: {
+          100: "#eef3ff",
+          500: "#3d6fd1",
+          600: "#2E5BBA",
+          700: "#24418F",
+        },
         background: "#FFFFFF",
         text: "#333333",
         border: "#E0E0E0",

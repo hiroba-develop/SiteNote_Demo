@@ -5,12 +5,20 @@ import {
   Navigate,
 } from "react-router-dom";
 import { AuthProvider, useAuth } from "./contexts/AuthContext";
+import { InvoicesProvider } from "./contexts/InvoicesContext";
+import { ContractChangeProvider } from "./contexts/ContractChangeContext";
+import { ProjectsProvider } from "./contexts/ProjectsContext";
+import Projects from "./pages/Projects";
+import ProjectDetail from "./pages/ProjectDetail";
+import ContractChange from "./pages/ContractChange";
 import Layout from "./components/Layout";
-import Dashboard from "./pages/Dashboard";
-import Sample from "./pages/Sample";
+// Dashboard and Sample removed
 import Settings from "./pages/Settings";
+import Invoices from "./pages/Invoices";
 import Login from "./pages/Login";
 import { useEffect } from "react";
+import { SiteProvider } from "./contexts/SiteContext";
+import SiteManager from "./pages/SiteManager";
 
 // 認証が必要なページをラップするコンポーネント
 const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({
@@ -75,7 +83,7 @@ const AppContent: React.FC = () => {
     }
 
     // デモモード用のページタイトル設定
-    document.title = "サンプルアプリ - ログイン認証デモ";
+    document.title = "SiteNote - ログイン認証デモ";
   }, []);
 
   return (
@@ -84,32 +92,63 @@ const AppContent: React.FC = () => {
       <Route path="/login" element={<Login />} />
 
       {/* 認証が必要なページ */}
-      <Route
-        path="/"
-        element={
-          <ProtectedRoute>
-            <Layout>
-              <Dashboard />
-            </Layout>
-          </ProtectedRoute>
-        }
-      />
-      <Route
-        path="/sample"
-        element={
-          <ProtectedRoute>
-            <Layout>
-              <Sample />
-            </Layout>
-          </ProtectedRoute>
-        }
-      />
+      <Route path="/" element={<Navigate to="/projects" replace />} />
       <Route
         path="/settings"
         element={
           <ProtectedRoute>
             <Layout>
               <Settings />
+            </Layout>
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/invoices"
+        element={
+          <ProtectedRoute>
+            <Layout>
+              <Invoices />
+            </Layout>
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/projects"
+        element={
+          <ProtectedRoute>
+            <Layout>
+              <Projects />
+            </Layout>
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/projects/:projectId"
+        element={
+          <ProtectedRoute>
+            <Layout>
+              <ProjectDetail />
+            </Layout>
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/contract-change"
+        element={
+          <ProtectedRoute>
+            <Layout>
+              <ContractChange />
+            </Layout>
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/site-manager"
+        element={
+          <ProtectedRoute>
+            <Layout>
+              <SiteManager />
             </Layout>
           </ProtectedRoute>
         }
@@ -124,9 +163,17 @@ function App() {
 
   return (
     <AuthProvider>
-      <Router basename={basename}>
-        <AppContent />
-      </Router>
+      <ProjectsProvider>
+        <InvoicesProvider>
+          <ContractChangeProvider>
+            <SiteProvider>
+              <Router basename={basename}>
+                <AppContent />
+              </Router>
+            </SiteProvider>
+          </ContractChangeProvider>
+        </InvoicesProvider>
+      </ProjectsProvider>
     </AuthProvider>
   );
 }
