@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { jsPDF } from "jspdf";
 import { format, parseISO } from "date-fns";
 import { useInvoices } from "../contexts/InvoicesContext";

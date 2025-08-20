@@ -1,26 +1,27 @@
 import { useEffect, useRef, useState } from "react";
 import { useContractChange } from "../contexts/ContractChangeContext";
 import { useProjects } from "../contexts/ProjectsContext";
-import type { ContractDraft } from "../contexts/ContractChangeContext";
 
 // Web Speech API 型定義 (簡易)
+type SpeechRecognitionType = any; // Fallback to 'any' for environments without proper types
 interface SpeechRecognitionConstructor {
-  new (): SpeechRecognition;
+  new (): SpeechRecognitionType;
 }
+
 declare global {
   interface Window {
     webkitSpeechRecognition: SpeechRecognitionConstructor;
   }
 }
 
-const getSpeechRecognition = (): SpeechRecognition | null => {
+const getSpeechRecognition = (): SpeechRecognitionType | null => {
   const SpeechRecognition = (window as any).SpeechRecognition || window.webkitSpeechRecognition;
   if (!SpeechRecognition) return null;
   return new SpeechRecognition();
 };
 
 const ContractChange = () => {
-  const recognitionRef = useRef<SpeechRecognition | null>(null);
+  const recognitionRef = useRef<SpeechRecognitionType | null>(null);
   const [isRecording, setIsRecording] = useState(false);
   const [transcript, setTranscript] = useState("");
   const [draftText, setDraftText] = useState("");
@@ -36,7 +37,7 @@ const ContractChange = () => {
     recognition.interimResults = true;
     recognition.continuous = false;
 
-    recognition.onresult = (event) => {
+    recognition.onresult = (event: any) => {
       let interim = "";
       for (let i = event.resultIndex; i < event.results.length; ++i) {
         const res = event.results[i];
@@ -47,7 +48,7 @@ const ContractChange = () => {
         }
       }
     };
-    recognition.onerror = (e) => {
+    recognition.onerror = (e: any) => {
       console.error("Speech recognition error", e);
       setIsRecording(false);
     };

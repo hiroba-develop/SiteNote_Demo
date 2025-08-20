@@ -28,8 +28,8 @@ export const ContractChangeProvider = ({ children }: { children: ReactNode }) =>
       try {
         const parsed: ContractDraft[] = JSON.parse(stored);
         const migrated = parsed.map((d) => ({
-          projectId: (d as any).projectId ?? "P-001",
           ...d,
+          projectId: (d as any).projectId ?? "P-001",
         }));
         setDrafts(migrated);
       } catch {

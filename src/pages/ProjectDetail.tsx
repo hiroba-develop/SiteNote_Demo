@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import { useProjects } from "../contexts/ProjectsContext";
-import type { CostItem } from "../contexts/ProjectsContext";
+// import type { CostItem } from "../contexts/ProjectsContext";
 import { format } from "date-fns";
 import { useContractChange } from "../contexts/ContractChangeContext";
 
@@ -10,7 +10,7 @@ const formatCurrency = (v: number) => `${v.toLocaleString()} 円`;
 const ProjectDetail = () => {
   const { projectId } = useParams<{ projectId: string }>();
   const navigate = useNavigate();
-  const { projects, addCostItem } = useProjects();
+  const { projects, addCostItem, updateProject } = useProjects();
   const project = projects.find((p) => p.id === projectId);
 
   const [desc, setDesc] = useState("");
@@ -30,10 +30,9 @@ const ProjectDetail = () => {
 
   const profit = project.budget - project.actualCost;
   const margin = project.budget ? (profit / project.budget) * 100 : 0;
-  const variance = project.budget ? ((project.budget - project.actualCost) / project.budget) * 100 : 0;
+  // const variance = project.budget ? ((project.budget - project.actualCost) / project.budget) * 100 : 0;
 
   const { drafts, approveDraft } = useContractChange();
-  const { updateProject } = useProjects();
   const projectDrafts = drafts.filter((d) => d.projectId === project.id);
   const fullWidthToHalf = (str: string) => str.replace(/[０-９]/g, (s) => String.fromCharCode(s.charCodeAt(0) - 0xFEE0));
   const approvedValueDelta = projectDrafts
